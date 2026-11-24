@@ -1,0 +1,9 @@
+<?php
+declare(strict_types=1);require_once __DIR__.'/app/auth.php';$customer=require_customer('/account.php');
+$metaTitle='My Account | Hammad Graphic';$metaDescription='View your Hammad Graphic customer account and project order history.';$canonicalPath='/account.php';$metaRobots='noindex,nofollow';
+$s=db()->prepare('SELECT order_reference,service_title,status,payment_status,created_at FROM orders WHERE customer_id=:id ORDER BY id DESC LIMIT 30');$s->execute([':id'=>(int)$customer['id']]);$orders=$s->fetchAll();
+require APP_ROOT.'/partials/header.php'; ?>
+<section class="page-hero"><div class="container"><p class="eyebrow">Customer area</p><h1>Welcome, <span class="text-gradient"><?=e($customer['full_name'])?>.</span></h1><p><?=e($customer['email'])?> · Your account is ready for project requests.</p></div></section>
+<section class="section section-white"><div class="container"><div class="account-actions"><a class="button button-primary" href="/order.php">Place a New Order</a><form method="post" action="/logout.php"><input type="hidden" name="csrf_token" value="<?=e(csrf_token())?>"><button class="button button-secondary" type="submit">Log Out</button></form></div><h2 class="account-heading">Your recent orders</h2>
+<?php if(!$orders):?><p class="form-note">You haven't placed an order yet.</p><?php else:?><div class="table-scroll"><table class="orders-table"><thead><tr><th>Reference</th><th>Service</th><th>Order status</th><th>Payment</th><th>Date</th></tr></thead><tbody><?php foreach($orders as $o):?><tr><td><?=e($o['order_reference'])?></td><td><?=e($o['service_title'])?></td><td><?=e(str_replace('_',' ',$o['status']))?></td><td><?=e(str_replace('_',' ',$o['payment_status']))?></td><td><?=e($o['created_at'])?></td></tr><?php endforeach;?></tbody></table></div><?php endif;?></div></section>
+<?php require APP_ROOT.'/partials/footer.php'; ?>
