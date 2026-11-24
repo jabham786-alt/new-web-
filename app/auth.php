@@ -7,7 +7,7 @@ function safe_return_path(mixed $candidate, string $fallback='/'): string {
 }
 function current_customer(): ?array {
  $id=$_SESSION['customer_id']??null;if(!is_int($id)&&!(is_string($id)&&ctype_digit($id)))return null;
- $s=db()->prepare('SELECT id,full_name,email,phone,auth_version FROM customers WHERE id=:id AND is_active=1 LIMIT 1');$s->execute([':id'=>(int)$id]);$c=$s->fetch();
+ $s=db()->prepare('SELECT id,full_name,username,email,phone,profile_photo,auth_version FROM customers WHERE id=:id AND is_active=1 LIMIT 1');$s->execute([':id'=>(int)$id]);$c=$s->fetch();
  if(!$c){unset($_SESSION['customer_id'],$_SESSION['customer_auth_version']);return null;}
  if(!isset($_SESSION['customer_auth_version'])||(int)$_SESSION['customer_auth_version']!==(int)$c['auth_version']){unset($_SESSION['customer_id'],$_SESSION['customer_auth_version']);return null;}
  unset($c['auth_version']);return $c;
