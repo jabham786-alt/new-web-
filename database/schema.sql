@@ -2,10 +2,10 @@
 SET NAMES utf8mb4;
 SET time_zone = '+05:00';
 CREATE TABLE IF NOT EXISTS customers (
- id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, full_name VARCHAR(100) NOT NULL, email VARCHAR(190) NOT NULL,
- phone VARCHAR(30) NOT NULL, password_hash VARCHAR(255) NOT NULL, auth_version INT UNSIGNED NOT NULL DEFAULT 1, is_active TINYINT(1) NOT NULL DEFAULT 1,
+ id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, full_name VARCHAR(100) NOT NULL, username VARCHAR(30) NOT NULL, email VARCHAR(190) NOT NULL,
+ phone VARCHAR(30) NOT NULL, profile_photo VARCHAR(255) NULL, password_hash VARCHAR(255) NOT NULL, auth_version INT UNSIGNED NOT NULL DEFAULT 1, is_active TINYINT(1) NOT NULL DEFAULT 1,
  email_verified_at DATETIME NULL, last_login_at DATETIME NULL, created_at DATETIME NOT NULL, updated_at DATETIME NULL,
- PRIMARY KEY(id), UNIQUE KEY uq_customers_email(email), KEY idx_customers_active(is_active)
+ PRIMARY KEY(id), UNIQUE KEY uq_customers_username(username), UNIQUE KEY uq_customers_email(email), KEY idx_customers_active(is_active)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 CREATE TABLE IF NOT EXISTS admin_users (
  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, username VARCHAR(60) NOT NULL, email VARCHAR(190) NOT NULL,
