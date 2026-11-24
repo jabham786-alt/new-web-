@@ -7,14 +7,21 @@ function safe_return_path(mixed $candidate, string $fallback='/'): string {
 }
 function current_customer(): ?array {
  $id=$_SESSION['customer_id']??null;if(!is_int($id)&&!(is_string($id)&&ctype_digit($id)))return null;
- $s=db()->prepare('SELECT id,full_name,email,phone FROM customers WHERE id=:id AND is_active=1 LIMIT 1');$s->execute([':id'=>(int)$id]);$c=$s->fetch();
- if(!$c)unset($_SESSION['customer_id']);return $c?:null;
+ $s=db()->prepare('SELECT id,full_name,email,phone,auth_version FROM customers WHERE id=:id AND is_active=1 LIMIT 1');$s->execute([':id'=>(int)$id]);$c=$s->fetch();
+ if(!$c){unset($_SESSION['customer_id'],$_SESSION['customer_auth_version']);return null;}
+ if(!isset($_SESSION['customer_auth_version'])||(int)$_SESSION['customer_auth_version']!==(int)$c['auth_version']){unset($_SESSION['customer_id'],$_SESSION['customer_auth_version']);return null;}
+ unset($c['auth_version']);return $c;
 }
 function require_customer(string $returnTo='/order.php'): array {
  $c=current_customer();if($c===null)redirect_local('/login.php?next='.rawurlencode(safe_return_path($returnTo,'/order.php')));return $c;
 }
-function customer_sign_in(int $id): void {session_regenerate_id(true);unset($_SESSION['admin_id']);$_SESSION['customer_id']=$id;}
-function customer_sign_out(): void {unset($_SESSION['customer_id']);session_regenerate_id(true);}
+function customer_sign_in(int $id): void {
+ session_regenerate_id(true);unset($_SESSION['admin_id']);
+ $s=db()->prepare('SELECT auth_version FROM customers WHERE id=:id AND is_active=1 LIMIT 1');$s->execute([':id'=>$id]);
+ $version=$s->fetchColumn();if($version===false)throw new RuntimeException('Customer account is unavailable.');
+ $_SESSION['customer_id']=$id;$_SESSION['customer_auth_version']=(int)$version;
+}
+function customer_sign_out(): void {unset($_SESSION['customer_id'],$_SESSION['customer_auth_version']);session_regenerate_id(true);}
 function auth_rate_key(string $scope,string $identity=''): string {
  $salt=(string)app_config('app.security_salt','');
  if(strlen($salt)<32||str_starts_with($salt,'REPLACE_'))throw new RuntimeException('Set a private random app.security_salt in config.local.php before using customer or admin authentication.');
