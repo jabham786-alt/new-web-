@@ -1,34 +1,26 @@
-# Local secrets and environment configuration
 /app/config/config.local.php
 .env
 .env.*
 !.env.example
-
-# Dependencies and generated output
 /vendor/
 /node_modules/
 /dist/
 /build/
 /coverage/
-
-# Logs, caches, and temporary files
 *.log
 *.cache
 /cache/
 /tmp/
 /temp/
-
-# OS and editor files
 .DS_Store
 Thumbs.db
 .idea/
 .vscode/
 *.swp
 *.swo
-
-# Local database exports and backups
 *.sql
 *.sql.gz
 *.zip
 *.bak
 *.old
+!database/schema.sql
