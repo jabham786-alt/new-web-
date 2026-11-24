@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+Disallow: /app/
+Disallow: /admin/
+Disallow: /database/
+Disallow: /storage/
+Disallow: /submit-order.php
+Disallow: /account.php
+Disallow: /login.php
+Disallow: /register.php
+Disallow: /forgot-password.php
+Disallow: /order-confirmation.php
+
+# Add the absolute sitemap URL after setting app.base_url:
+# Sitemap: https://your-domain.example/sitemap.php
