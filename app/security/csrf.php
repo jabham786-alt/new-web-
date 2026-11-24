@@ -15,8 +15,9 @@ function csrf_token(): string
 
 /**
  * Validate a submitted CSRF token using a timing-safe comparison.
+ * Accept mixed input so malformed array submissions are rejected, not fatal.
  */
-function csrf_token_is_valid(?string $submittedToken): bool
+function csrf_token_is_valid(mixed $submittedToken): bool
 {
     $knownToken = $_SESSION['csrf_token'] ?? null;
 
@@ -32,8 +33,10 @@ function csrf_token_is_valid(?string $submittedToken): bool
  */
 function require_valid_csrf_post(): void
 {
+    $submittedToken = $_POST['csrf_token'] ?? null;
+
     if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST'
-        || !csrf_token_is_valid($_POST['csrf_token'] ?? null)) {
+        || !csrf_token_is_valid($submittedToken)) {
         http_response_code(403);
         exit('Request rejected.');
     }
