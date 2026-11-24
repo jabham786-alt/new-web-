@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /app/
+Disallow: /admin/
+Disallow: /database/
+Disallow: /storage/
+Disallow: /submit-order.php
+Disallow: /order-confirmation.php
+
+# Set app.base_url to your verified HTTPS domain before SEO launch.
+Sitemap: /sitemap.php
