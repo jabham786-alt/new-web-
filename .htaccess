@@ -1,16 +1,12 @@
 Options -Indexes
 DirectoryIndex index.php
 
-# Do not expose dotfiles or repository/development metadata.
 <FilesMatch "^\.(?!well-known/)">
     Require all denied
 </FilesMatch>
-
 <FilesMatch "^(README\.md|LICENSE|composer\.(json|lock)|phpunit\.xml(\.dist)?)$">
     Require all denied
 </FilesMatch>
-
-# Prevent accidental exposure of common backup and dump formats.
 <FilesMatch "\.(sql|log|ini|env|bak|old|orig|swp|dist)$">
     Require all denied
 </FilesMatch>
