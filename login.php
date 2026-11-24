@@ -2,7 +2,7 @@
 declare(strict_types=1);
 require_once __DIR__.'/app/auth.php';
 if(current_customer()!==null)redirect_local('/account.php');
-$next=safe_return_path($_GET['next']??$_POST['next']??'/order.php','/order.php');$metaTitle='Customer Login | Hammad Graphic';$metaDescription='Log in to your Hammad Graphic customer account.';$canonicalPath='/login.php';$metaRobots='noindex,nofollow';$error='';
+$next=safe_return_path($_GET['next']??$_POST['next']??'/order.php','/order.php');$metaTitle='Customer Login | Hammad Graphic';$metaDescription='Log in to your Hammad Graphic customer account.';$canonicalPath='/login.php';$metaRobots='noindex,nofollow';$error='';$success=(($_GET['reset']??'')==='success')?'Your password has been reset. Please log in with your new password.':'';
 if(($_SERVER['REQUEST_METHOD']??'')==='POST'){
  require_valid_csrf_post();$email=strtolower(trim((string)($_POST['email']??'')));$password=(string)($_POST['password']??'');$key=auth_rate_key('login',$email);
  if(auth_rate_limited($key,5,15))$error='Too many login attempts. Please wait 15 minutes.';
@@ -13,7 +13,7 @@ if(($_SERVER['REQUEST_METHOD']??'')==='POST'){
 require APP_ROOT.'/partials/header.php'; ?>
 <section class="page-hero"><div class="container"><p class="eyebrow">Welcome back</p><h1>Log in to your <span class="text-gradient">account.</span></h1><p>Access your customer account before placing a new order.</p></div></section>
 <section class="section section-white"><div class="container auth-wrap"><form class="order-form auth-form" method="post" action="/login.php" novalidate>
-<?php if($error!==''):?><div class="alert alert-error" role="alert"><?=e($error)?></div><?php endif;?>
+<?php if($success!==''):?><div class="alert alert-success" role="status"><?=e($success)?></div><?php endif;?><?php if($error!==''):?><div class="alert alert-error" role="alert"><?=e($error)?></div><?php endif;?>
 <input type="hidden" name="csrf_token" value="<?=e(csrf_token())?>"><input type="hidden" name="next" value="<?=e($next)?>">
 <div class="form-row"><label for="email">Email address *</label><input id="email" name="email" type="email" maxlength="190" autocomplete="username" required></div>
 <div class="form-row"><label for="password">Password *</label><input id="password" name="password" type="password" autocomplete="current-password" required></div>
