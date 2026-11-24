@@ -14,5 +14,5 @@ $canonicalPath=$canonicalPath??'/';
 <a class="skip-link" href="#main">Skip to content</a><header class="site-header"><div class="container nav-wrap">
 <a class="brand" href="/" aria-label="Hammad Graphic home"><span class="brand-mark">HG</span><span>Hammad<span class="brand-accent">Graphic</span></span></a>
 <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">Menu</button>
-<nav id="primary-nav" class="primary-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/services.php">Services</a><a href="/about.php">About</a><a href="/contact.php">Contact</a><?php if($navCustomer):?><a href="/account.php">My Account</a><?php else:?><a href="/login.php">Log In</a><a href="/register.php">Register</a><?php endif;?><a class="nav-cta" href="/order.php">Start an Order</a></nav>
+<nav id="primary-nav" class="primary-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/services.php">Services</a><a href="/about.php">About</a><a href="/contact.php">Contact</a><?php if($navCustomer):?><a href="/account.php">My Profile</a><?php else:?><a href="/login.php">Log In</a><a href="/register.php">Register</a><?php endif;?><a class="nav-cta" href="/order.php">Start an Order</a></nav>
 </div></header><main id="main">
