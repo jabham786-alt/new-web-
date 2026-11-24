@@ -3,7 +3,7 @@
 Security-first PHP + MySQL website designed for deployment on InfinityFree shared hosting.
 
 ## Technology
-- PHP 8.x (use the PHP version enabled in the hosting control panel)
+- PHP 8.1+ (select a supported PHP version in the hosting control panel)
 - MySQL with PDO and native prepared statements
 - HTML5, CSS3, vanilla JavaScript
 - Apache `.htaccess` protections
@@ -32,7 +32,7 @@ Phase 1 establishes the security baseline and a minimal public landing page. Bus
 ```
 
 ## Local setup
-1. Use PHP 8.x and Apache (for example, XAMPP).
+1. Use PHP 8.1+ and Apache (for example, XAMPP).
 2. Copy `app/config/config.example.php` to `app/config/config.local.php`.
 3. Put local database credentials only in `config.local.php`; never commit that file.
 4. Open the project through Apache, not as a `file://` URL.
