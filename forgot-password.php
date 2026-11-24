@@ -36,7 +36,7 @@ if(($_SERVER['REQUEST_METHOD']??'')==='POST'){
      if($r&&$r['status']==='otp_issued'){$n=(int)$r['attempts']+1;$status=$n>=5?'expired':'otp_issued';$pdo->prepare('UPDATE password_reset_requests SET attempts=:n,status=:status WHERE id=:id')->execute([':n'=>$n,':status'=>$status,':id'=>(int)$r['id']]);}
      $pdo->commit();$error='The code is invalid, expired or has already been used. Request a new code if needed.';
     }else{
-     $pdo->prepare('UPDATE customers SET password_hash=:hash,updated_at=NOW() WHERE id=:id')->execute([':hash'=>password_hash($password,PASSWORD_DEFAULT),':id'=>(int)$r['customer_id']]);
+     $pdo->prepare('UPDATE customers SET password_hash=:hash,auth_version=auth_version+1,updated_at=NOW() WHERE id=:id')->execute([':hash'=>password_hash($password,PASSWORD_DEFAULT),':id'=>(int)$r['customer_id']]);
      $pdo->prepare("UPDATE password_reset_requests SET status='used',otp_hash=NULL,used_at=NOW() WHERE id=:id")->execute([':id'=>(int)$r['id']]);$pdo->commit();
      unset($_SESSION['password_reset_request_id'],$_SESSION['password_reset_flow_started']);session_regenerate_id(true);redirect_local('/login.php?reset=success');
     }
