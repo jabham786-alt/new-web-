@@ -16,7 +16,9 @@ function require_customer(string $returnTo='/order.php'): array {
 function customer_sign_in(int $id): void {session_regenerate_id(true);unset($_SESSION['admin_id']);$_SESSION['customer_id']=$id;}
 function customer_sign_out(): void {unset($_SESSION['customer_id']);session_regenerate_id(true);}
 function auth_rate_key(string $scope,string $identity=''): string {
- return hash_hmac('sha256',$scope.'|'.strtolower(trim($identity)).'|'.(string)($_SERVER['REMOTE_ADDR']??'unknown'),(string)app_config('app.security_salt',''));
+ $salt=(string)app_config('app.security_salt','');
+ if(strlen($salt)<32||str_starts_with($salt,'REPLACE_'))throw new RuntimeException('Set a private random app.security_salt in config.local.php before using customer or admin authentication.');
+ return hash_hmac('sha256',$scope.'|'.strtolower(trim($identity)).'|'.(string)($_SERVER['REMOTE_ADDR']??'unknown'),$salt);
 }
 function auth_rate_limited(string $key,int $limit,int $minutes): bool {
  $s=db()->prepare('SELECT attempts,window_started_at,blocked_until FROM auth_rate_limits WHERE rate_key=:key LIMIT 1');$s->execute([':key'=>$key]);$r=$s->fetch();
