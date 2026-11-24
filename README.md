@@ -11,8 +11,8 @@ Security-first PHP/MySQL company website for InfinityFree shared hosting.
 ## Included
 - Homepage, About, Services, Contact and project-order pages
 - Graphic design, brand identity, social media, print, document, website and SEO service catalogue
-- Order request validation, CSRF protection, honeypot and basic session rate limiting
-- PDO database layer and SQL schema
+- Customer registration/login, authenticated orders, CSRF protection, password hashing, database-backed login throttling and admin-issued OTP password recovery
+- PDO database layer, fresh-install SQL schema and a separate migration for the older starter database
 - EasyPaisa/JazzCash configuration placeholders (account numbers intentionally blank)
 - Page titles/descriptions, canonical URLs when configured, Open Graph metadata, ProfessionalService JSON-LD, robots.txt and XML sitemap endpoint
 - Session cookie protections, security headers, output escaping and private application/database directories
@@ -30,7 +30,9 @@ Security-first PHP/MySQL company website for InfinityFree shared hosting.
 3. Create `app/config/config.local.php` on the server by copying the example and filling the database credentials shown by InfinityFree.
 4. Set `app.base_url` to your exact HTTPS domain, without a trailing slash.
 5. Keep `app/config/config.local.php` private; it is excluded from Git.
-6. Test the homepage and order form after database setup.
+6. Configure a long random `app.security_salt` and a one-time `admin.setup_key` in the private config.
+7. Visit `/admin/setup.php` once to create the first administrator, then sign in at `/admin/login.php`.
+8. Test registration, login, order submission and password reset before launch.
 
 ## Wallet account numbers
 In the server-side `app/config/config.local.php`, edit:
@@ -41,12 +43,13 @@ In the server-side `app/config/config.local.php`, edit:
 - `payments.jazzcash.account_number`
 - `payments.jazzcash.enabled`
 
-Never enter wallet MPIN, OTP, password or secret PIN in the website. The intended flow is order request → owner quotation → customer pays → customer submits transaction details/receipt → owner verifies funds and marks the order paid. The payment collection and owner admin interface are the next implementation phase; the current order form does not collect money or claim payment has been verified.
+For password recovery, the admin dashboard generates a six-digit code valid for 10 minutes; it is stored hashed and shown once to the administrator to send manually to the customer's registered email. The customer enters the code and a new password on the same reset page. Never enter wallet MPIN, wallet OTP, password or secret PIN in the website. The intended flow is order request → owner quotation → customer pays → customer submits transaction details/receipt → owner verifies funds and marks the order paid. The admin area currently includes order visibility and admin-issued OTP reset codes. Wallet payment submission, receipt verification and order-status management are a subsequent implementation phase. The order form does not collect money or claim payment has been verified.
 
 ## SEO launch checklist
 - Set the real HTTPS domain in `app.base_url`.
 - Confirm each page title and description.
-- Set the absolute `Sitemap: https://YOUR-DOMAIN/sitemap.php` line in `robots.txt` after your domain is confirmed.\n- Open `/robots.txt` and `/sitemap.php`; the sitemap intentionally returns a setup message until a valid HTTPS base URL is configured.
+- Set the absolute `Sitemap: https://YOUR-DOMAIN/sitemap.php` line in `robots.txt` after your domain is confirmed.
+- Open `/robots.txt` and `/sitemap.php`; the sitemap intentionally returns a setup message until a valid HTTPS base URL is configured.
 - Add the verified domain to Google Search Console and submit `https://YOUR-DOMAIN/sitemap.php`.
 - Add Google Analytics only after the measurement ID is confirmed; do not invent tracking IDs.
 
