@@ -5,6 +5,11 @@ Disallow: /admin/
 Disallow: /database/
 Disallow: /storage/
 Disallow: /submit-order.php
+Disallow: /account.php
+Disallow: /login.php
+Disallow: /register.php
+Disallow: /forgot-password.php
+Disallow: /order-confirmation.php
 
-# Add your absolute sitemap URL after setting app.base_url:
+# Add the absolute sitemap URL after setting app.base_url:
 # Sitemap: https://your-domain.example/sitemap.php
