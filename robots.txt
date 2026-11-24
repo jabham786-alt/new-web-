@@ -6,5 +6,5 @@ Disallow: /database/
 Disallow: /storage/
 Disallow: /submit-order.php
 
-# Set app.base_url to your verified HTTPS domain before SEO launch.
-Sitemap: /sitemap.php
+# Add your absolute sitemap URL after setting app.base_url:
+# Sitemap: https://your-domain.example/sitemap.php
