@@ -46,7 +46,7 @@ Never enter wallet MPIN, OTP, password or secret PIN in the website. The intende
 ## SEO launch checklist
 - Set the real HTTPS domain in `app.base_url`.
 - Confirm each page title and description.
-- Open `/robots.txt` and `/sitemap.php`; the sitemap intentionally returns a setup message until a valid HTTPS base URL is configured.
+- Set the absolute `Sitemap: https://YOUR-DOMAIN/sitemap.php` line in `robots.txt` after your domain is confirmed.\n- Open `/robots.txt` and `/sitemap.php`; the sitemap intentionally returns a setup message until a valid HTTPS base URL is configured.
 - Add the verified domain to Google Search Console and submit `https://YOUR-DOMAIN/sitemap.php`.
 - Add Google Analytics only after the measurement ID is confirmed; do not invent tracking IDs.
 
