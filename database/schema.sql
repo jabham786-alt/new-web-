@@ -24,6 +24,12 @@ CREATE TABLE IF NOT EXISTS orders (
  KEY idx_orders_status_created(status,created_at), KEY idx_orders_payment_status(payment_status),
  CONSTRAINT fk_orders_customer FOREIGN KEY(customer_id) REFERENCES customers(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE IF NOT EXISTS order_messages (
+ id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, order_id BIGINT UNSIGNED NOT NULL,
+ sender_type ENUM('customer','admin') NOT NULL, sender_id BIGINT UNSIGNED NULL, message TEXT NOT NULL,
+ created_at DATETIME NOT NULL, PRIMARY KEY(id), KEY idx_order_messages_order_created(order_id,created_at),
+ CONSTRAINT fk_order_messages_order FOREIGN KEY(order_id) REFERENCES orders(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 CREATE TABLE IF NOT EXISTS password_reset_requests (
  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, customer_id BIGINT UNSIGNED NOT NULL, email VARCHAR(190) NOT NULL,
  status ENUM('pending','otp_issued','used','expired','cancelled') NOT NULL DEFAULT 'pending',
