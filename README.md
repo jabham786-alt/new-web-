@@ -11,7 +11,7 @@ Security-first PHP/MySQL company website for InfinityFree shared hosting.
 ## Included
 - Homepage, About, Services, Contact and project-order pages
 - Graphic design, brand identity, social media, print, document, website and SEO service catalogue
-- Customer registration/login, authenticated orders, CSRF protection, password hashing, database-backed login throttling and admin-issued OTP password recovery
+- Customer profile registration with unique username, email, mobile number, optional validated profile photo, username/email login, profile editing, authenticated orders, CSRF protection, password hashing, database-backed login throttling and admin-issued OTP password recovery
 - PDO database layer, fresh-install SQL schema and a separate migration for the older starter database
 - EasyPaisa/JazzCash configuration placeholders (account numbers intentionally blank)
 - Page titles/descriptions, canonical URLs when configured, Open Graph metadata, ProfessionalService JSON-LD, robots.txt and XML sitemap endpoint
@@ -33,6 +33,17 @@ Security-first PHP/MySQL company website for InfinityFree shared hosting.
 6. Configure a long random `app.security_salt` and a one-time `admin.setup_key` in the private config.
 7. Visit `/admin/setup.php` once to create the first administrator, then sign in at `/admin/login.php`.
 8. Test registration, login, order submission and password reset before launch.
+
+## Customer and admin dashboards
+
+- Customers use `/account.php` as their dashboard to edit their profile, place new orders, review each order and open its private conversation at `/customer-order.php?id=ORDER_ID`.
+- The owner uses `/admin/login.php` and `/admin/` as the separate admin dashboard. Each order opens at `/admin/order.php?id=ORDER_ID`, where the owner can review customer details, update the order status and reply.
+- New orders automatically receive an in-dashboard acknowledgement. Customer/admin messages are stored per order in `order_messages`; these are in-site messages, not email or WhatsApp notifications.
+- Existing installations must back up the database and run `database/migrations/004_order_messaging_and_admin_workflow.sql` once before uploading/using the updated dashboard files. Fresh installs get this table from `database/schema.sql`.
+
+## Customer profile fields
+
+The registration page collects full name, unique username, mobile/WhatsApp number, email, password and an optional JPG/PNG/WebP profile photo (maximum 2 MB). Customers can sign in using either username or email plus password. Each signed-in customer sees and edits only their own profile and order history. Profile images are stored under `uploads/profile/` with random filenames; script execution is denied in that directory. Existing customers are assigned a generated username by migration 003 and can use it or their email to sign in.
 
 ## Wallet account numbers
 In the server-side `app/config/config.local.php`, edit:

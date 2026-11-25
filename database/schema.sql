@@ -2,10 +2,10 @@
 SET NAMES utf8mb4;
 SET time_zone = '+05:00';
 CREATE TABLE IF NOT EXISTS customers (
- id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, full_name VARCHAR(100) NOT NULL, email VARCHAR(190) NOT NULL,
- phone VARCHAR(30) NOT NULL, password_hash VARCHAR(255) NOT NULL, auth_version INT UNSIGNED NOT NULL DEFAULT 1, is_active TINYINT(1) NOT NULL DEFAULT 1,
+ id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, full_name VARCHAR(100) NOT NULL, username VARCHAR(30) NOT NULL, email VARCHAR(190) NOT NULL,
+ phone VARCHAR(30) NOT NULL, profile_photo VARCHAR(255) NULL, password_hash VARCHAR(255) NOT NULL, auth_version INT UNSIGNED NOT NULL DEFAULT 1, is_active TINYINT(1) NOT NULL DEFAULT 1,
  email_verified_at DATETIME NULL, last_login_at DATETIME NULL, created_at DATETIME NOT NULL, updated_at DATETIME NULL,
- PRIMARY KEY(id), UNIQUE KEY uq_customers_email(email), KEY idx_customers_active(is_active)
+ PRIMARY KEY(id), UNIQUE KEY uq_customers_username(username), UNIQUE KEY uq_customers_email(email), KEY idx_customers_active(is_active)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 CREATE TABLE IF NOT EXISTS admin_users (
  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, username VARCHAR(60) NOT NULL, email VARCHAR(190) NOT NULL,
@@ -23,6 +23,12 @@ CREATE TABLE IF NOT EXISTS orders (
  KEY idx_orders_customer_created(customer_id,created_at), KEY idx_orders_email(email),
  KEY idx_orders_status_created(status,created_at), KEY idx_orders_payment_status(payment_status),
  CONSTRAINT fk_orders_customer FOREIGN KEY(customer_id) REFERENCES customers(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE IF NOT EXISTS order_messages (
+ id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, order_id BIGINT UNSIGNED NOT NULL,
+ sender_type ENUM('customer','admin') NOT NULL, sender_id BIGINT UNSIGNED NULL, message TEXT NOT NULL,
+ created_at DATETIME NOT NULL, PRIMARY KEY(id), KEY idx_order_messages_order_created(order_id,created_at),
+ CONSTRAINT fk_order_messages_order FOREIGN KEY(order_id) REFERENCES orders(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 CREATE TABLE IF NOT EXISTS password_reset_requests (
  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, customer_id BIGINT UNSIGNED NOT NULL, email VARCHAR(190) NOT NULL,
