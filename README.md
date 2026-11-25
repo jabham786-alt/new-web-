@@ -34,6 +34,13 @@ Security-first PHP/MySQL company website for InfinityFree shared hosting.
 7. Visit `/admin/setup.php` once to create the first administrator, then sign in at `/admin/login.php`.
 8. Test registration, login, order submission and password reset before launch.
 
+## Customer and admin dashboards
+
+- Customers use `/account.php` as their dashboard to edit their profile, place new orders, review each order and open its private conversation at `/customer-order.php?id=ORDER_ID`.
+- The owner uses `/admin/login.php` and `/admin/` as the separate admin dashboard. Each order opens at `/admin/order.php?id=ORDER_ID`, where the owner can review customer details, update the order status and reply.
+- New orders automatically receive an in-dashboard acknowledgement. Customer/admin messages are stored per order in `order_messages`; these are in-site messages, not email or WhatsApp notifications.
+- Existing installations must back up the database and run `database/migrations/004_order_messaging_and_admin_workflow.sql` once before uploading/using the updated dashboard files. Fresh installs get this table from `database/schema.sql`.
+
 ## Customer profile fields
 
 The registration page collects full name, unique username, mobile/WhatsApp number, email, password and an optional JPG/PNG/WebP profile photo (maximum 2 MB). Customers can sign in using either username or email plus password. Each signed-in customer sees and edits only their own profile and order history. Profile images are stored under `uploads/profile/` with random filenames; script execution is denied in that directory. Existing customers are assigned a generated username by migration 003 and can use it or their email to sign in.
