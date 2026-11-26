@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+<title id="title">Hammad Graphics</title><desc id="desc">HG monogram with a green motion swoosh and Hammad Graphics lettering.</desc>
+<defs><linearGradient id="silver" x1="0" y1="0" x2="0.2" y2="1"><stop stop-color="#fff"/><stop offset=".55" stop-color="#d9dce5"/><stop offset="1" stop-color="#9299a8"/></linearGradient><linearGradient id="green" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d8ff00"/><stop offset=".48" stop-color="#57ed00"/><stop offset="1" stop-color="#00a92e"/></linearGradient></defs>
+<g stroke="#080d0d" stroke-width="22" stroke-linejoin="round"><path fill="url(#silver)" d="M175 78h120l-48 142 190-1 49-141h120l-103 301H383l43-126H237l-43 126H75z"/><path fill="url(#green)" d="M455 287h290l-30 91H555l-15 42h133c-14 75-82 114-184 114-93 0-140-42-127-108l28-85c15-49 37-54 65-54z"/></g>
+<path d="M68 382C210 213 477 72 830 105 592 112 323 201 68 382Z" fill="url(#green)" stroke="#07110a" stroke-width="12"/>
+<path d="M95 398C300 253 554 171 817 174" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+<path d="M65 430h770q25 0 18 25l-27 82q-6 17-29 17H49q-24 0-15-22l31-81q7-21 30-21Z" fill="#080d10" stroke="url(#green)" stroke-width="9"/>
+<text x="450" y="526" fill="url(#silver)" stroke="#111" stroke-width="3" paint-order="stroke" font-family="Arial,Helvetica,sans-serif" font-size="100" font-style="italic" font-weight="900" text-anchor="middle" letter-spacing="-4">Hammad</text>
+<text x="470" y="588" fill="url(#green)" stroke="#101510" stroke-width="3" paint-order="stroke" font-family="Arial,Helvetica,sans-serif" font-size="77" font-style="italic" font-weight="900" text-anchor="middle" letter-spacing="-2">Graphics</text>
+</svg>
