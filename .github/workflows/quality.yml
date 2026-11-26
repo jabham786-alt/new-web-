@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - feature/security-foundation
+      - rebuild/hg-responsive-logo-loader-blog-admin
   pull_request:
 
 jobs:
