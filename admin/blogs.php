@@ -1,0 +1,7 @@
+<?php
+declare(strict_types=1);require_once dirname(__DIR__).'/app/admin_auth.php';require_admin();
+$posts=db()->query('SELECT id,title,slug,status,published_at,updated_at FROM blog_posts ORDER BY id DESC')->fetchAll();
+$metaTitle='Blog Management | Hammad Graphics';$metaDescription='Manage website blog posts.';$canonicalPath='/admin/blogs.php';$metaRobots='noindex,nofollow';
+require APP_ROOT.'/partials/header.php';?>
+<section class="page-hero"><div class="container"><p class="eyebrow">Admin content studio</p><h1>Blog <span class="text-gradient">Management.</span></h1><a class="button button-primary" href="/admin/blog-edit.php">Create Blog Post</a> <a class="button button-secondary" href="/admin/">Admin Dashboard</a></div></section>
+<section class="section section-white"><div class="container"><div class="table-scroll"><table class="orders-table"><thead><tr><th>Title</th><th>Slug</th><th>Status</th><th>Published</th><th>Edit</th></tr></thead><tbody><?php foreach($posts as $p):?><tr><td><?=e($p['title'])?></td><td><?=e($p['slug'])?></td><td><?=e($p['status'])?></td><td><?=e($p['published_at']??'—')?></td><td><a class="button button-primary" href="/admin/blog-edit.php?id=<?=(int)$p['id']?>">Edit</a></td></tr><?php endforeach;?></tbody></table><?php if(!$posts):?><p>No blog posts yet.</p><?php endif;?></div></div></section><?php require APP_ROOT.'/partials/footer.php';?>
