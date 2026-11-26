@@ -28,7 +28,9 @@ function safe_return_path(string $path, string $fallback = '/'): string
         $path === '' ||
         $path[0] !== '/' ||
         str_starts_with($path, '//') ||
-        preg_match('/[\\r\\n\\\\]/', $path)
+        str_contains($path, '\\') ||
+        str_contains($path, "\r") ||
+        str_contains($path, "\n")
     ) {
         return $fallback;
     }
