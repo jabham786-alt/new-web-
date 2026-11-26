@@ -1,10 +1,6 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/bootstrap.php';
-function safe_return_path(mixed $candidate, string $fallback='/'): string {
- if(!is_string($candidate)||$candidate===''||$candidate[0]!=='/'||str_starts_with($candidate,'//')||str_contains($candidate,"\\")||preg_match('/[\r\n]/',$candidate))return $fallback;
- $parts=parse_url($candidate);if($parts===false||isset($parts['host'])||isset($parts['scheme']))return $fallback;return $candidate;
-}
 function current_customer(): ?array {
  $id=$_SESSION['customer_id']??null;if(!is_int($id)&&!(is_string($id)&&ctype_digit($id)))return null;
  $s=db()->prepare('SELECT id,full_name,username,email,phone,profile_photo,auth_version FROM customers WHERE id=:id AND is_active=1 LIMIT 1');$s->execute([':id'=>(int)$id]);$c=$s->fetch();
