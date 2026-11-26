@@ -16,6 +16,38 @@ function app_config(string $key, mixed $default = null): mixed
     return $value;
 }
 
+/**
+ * Accept only a local absolute-path return target.
+ * Reject external URLs, protocol-relative URLs, and malformed paths.
+ */
+function safe_return_path(string $path, string $fallback = '/'): string
+{
+    $path = trim($path);
+
+    if (
+        $path === '' ||
+        $path[0] !== '/' ||
+        str_starts_with($path, '//') ||
+        preg_match('/[\\r\\n\\\\]/', $path)
+    ) {
+        return $fallback;
+    }
+
+    $parts = parse_url($path);
+
+    if (
+        $parts === false ||
+        isset($parts['scheme']) ||
+        isset($parts['host']) ||
+        isset($parts['user']) ||
+        isset($parts['pass'])
+    ) {
+        return $fallback;
+    }
+
+    return $path;
+}
+
 function redirect_local(string $path): never
 {
     if ($path === '' || $path[0] !== '/' || str_starts_with($path, '//')) $path = '/';
