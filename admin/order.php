@@ -12,9 +12,9 @@ if(($_SERVER['REQUEST_METHOD']??'')==='POST'){
   redirect_local('/admin/order.php?id='.$orderId.'#conversation');
  }
  if($action==='edit'){
-  $name=trim((string)($_POST['customer_name']??''));$email=strtolower(trim((string)($_POST['email']??'')));$phone=trim((string)($_POST['phone']??''));$details=trim((string)($_POST['project_details']??''));$budget=trim((string)($_POST['budget']??''));
-  if($name===''||mb_strlen($name)>100||!filter_var($email,FILTER_VALIDATE_EMAIL)||mb_strlen($email)>190||!preg_match('/^[0-9+().\\-\\s]{7,30}$/',$phone)||$details===''||mb_strlen($details)>5000){$_SESSION['admin_flash_error']='Please check customer name, email, phone and project details.';redirect_local('/admin/order.php?id='.$orderId.'#edit-order');}
-  db()->prepare('UPDATE orders SET customer_name=:name,email=:email,phone=:phone,project_details=:details,budget=:budget,updated_at=NOW() WHERE id=:id')->execute([':name'=>$name,':email'=>$email,':phone'=>$phone,':details'=>$details,':budget'=>$budget!==''?$budget:null,':id'=>$orderId]);
+  $name=trim((string)($_POST['customer_name']??''));$email=strtolower(trim((string)($_POST['email']??'')));$phone=trim((string)($_POST['phone']??''));$details=trim((string)($_POST['project_details']??''));$budget=trim((string)($_POST['budget']??''));$serviceTitle=trim((string)($_POST['service_title']??''));$quotedAmount=trim((string)($_POST['quoted_amount']??''));$paymentStatus=(string)($_POST['payment_status']??'unpaid');
+  if($name===''||mb_strlen($name)>100||!filter_var($email,FILTER_VALIDATE_EMAIL)||mb_strlen($email)>190||!preg_match('/^[0-9+().\\-\\s]{7,30}$/',$phone)||$details===''||mb_strlen($details)>5000||$serviceTitle===''||mb_strlen($serviceTitle)>160||($quotedAmount!==''&&(!is_numeric($quotedAmount)||(float)$quotedAmount<0||(float)$quotedAmount>99999999.99))||!in_array($paymentStatus,['unpaid','submitted','under_review','paid','rejected','refunded'],true)){$_SESSION['admin_flash_error']='Please check customer name, email, phone and project details.';redirect_local('/admin/order.php?id='.$orderId.'#edit-order');}
+  db()->prepare('UPDATE orders SET customer_name=:name,email=:email,phone=:phone,service_title=:service_title,project_details=:details,budget=:budget,quoted_amount=:quoted_amount,payment_status=:payment_status,updated_at=NOW() WHERE id=:id')->execute([':name'=>$name,':email'=>$email,':phone'=>$phone,':service_title'=>$serviceTitle,':details'=>$details,':budget'=>$budget!==''?$budget:null,':quoted_amount'=>$quotedAmount!==''?$quotedAmount:null,':payment_status'=>$paymentStatus,':id'=>$orderId]);
   redirect_local('/admin/order.php?id='.$orderId.'#edit-order');
  }
  if($action==='message'){
@@ -36,6 +36,9 @@ require APP_ROOT.'/partials/header.php'; ?>
 <div class="form-row"><label for="customer_name">Customer name</label><input id="customer_name" name="customer_name" maxlength="100" value="<?=e($order['customer_name'])?>" required></div>
 <div class="form-row"><label for="email">Customer email</label><input id="email" name="email" type="email" maxlength="190" value="<?=e($order['email'])?>" required></div>
 <div class="form-row"><label for="phone">Customer phone</label><input id="phone" name="phone" maxlength="30" value="<?=e($order['phone'])?>" required></div>
+<div class="form-row"><label for="service_title">Service title</label><input id="service_title" name="service_title" maxlength="160" value="<?=e($order['service_title'])?>" required></div>
+<div class="form-row"><label for="quoted_amount">Quoted amount (PKR)</label><input id="quoted_amount" name="quoted_amount" type="number" min="0" max="99999999.99" step="0.01" value="<?=e((string)($order['quoted_amount']??''))?>"></div>
+<div class="form-row"><label for="payment_status">Payment status</label><select id="payment_status" name="payment_status"><?php foreach(['unpaid','submitted','under_review','paid','rejected','refunded'] as $payment):?><option value="<?=e($payment)?>" <?=$order['payment_status']===$payment?'selected':''?>><?=e(ucwords(str_replace('_',' ',$payment)))?></option><?php endforeach;?></select></div>
 <div class="form-row"><label for="project_details">Project details</label><textarea id="project_details" name="project_details" rows="6" maxlength="5000" required><?=e($order['project_details'])?></textarea></div>
 <div class="form-row"><label for="budget">Budget</label><input id="budget" name="budget" maxlength="80" value="<?=e($order['budget']??'')?>"></div>
 <button class="button button-primary" type="submit">Save Order Details</button></form>
